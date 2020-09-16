@@ -1,2 +1,4 @@
 # NBAhupu-Search-Web
-Project3 for 2019 Tsinghua Summer Course
+
+Python编程，Web服务器，爬虫
+使用Django搭建虎扑NBA新闻的搜索网站
