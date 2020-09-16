@@ -1,0 +1,104 @@
+{% load staticfiles %}
+{% load highlight %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  <style>
+    span.highlighted { color: red; }
+</style>
+      {% if searched %}
+    <title>搜索-{{query}}-第{{current_num}}页</title>
+      {% else %}
+      <title>搜索</title>
+      {% endif %}
+    <link rel="stylesheet" href="{% static "css/semantic.css" %}" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+    <div class="ui inverted menu">
+        <<a href={% url 'index' %} class="item">Home</a>
+        <a href="{% url 'search' %}" class="active item">Search</a>
+    </div>
+    <div class="ui vertical segment">
+      <div class="ui grid">
+        <div class="three wide column">
+          
+        </div>
+        <div class="ten wide column">
+          <div class="ui image">
+            <img src={% static "images/nba.jpg" %} alt="">
+          </div>
+        <form action={% url 'search' %} method="get">
+          <div class="ui fluid action input">
+
+            <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+            <button type="submit" id="search" class="ui button">搜索</button>
+
+          </div>
+        </form>
+            {% if searched %}
+          <table class="ui very basic table">
+            <tr>
+              <td align="left" style="text-align:left">
+                相关新闻数量：{{num}}条
+              </td>
+              <td align="right" style="text-align:right">
+                搜索用时：{{time}}秒
+              </td>
+            </tr>
+          </table>
+          <div class="ui horizontal divider">
+            搜索结果
+          </div>
+          {% for article in current_list %}
+            <div class="ui container segment">
+              <h2 class="ui header">
+                <a href="{% url 'news' article.id%}">{% highlight article.title with query %}</a>
+              </h2>
+              <p>
+                  {% highlight article.content with query %}
+              </p>
+            </div>
+          {% endfor %}
+          <div class="ui pagination menu">
+            {% if current_list.has_previous %}
+            <a href="?q={{ query }}&pn={{ current_list.previous_page_number }}" class="icon item">
+              <i class="left arrow icon"></i>
+            </a>
+            {% else %}
+            <a class="disabled icon item">
+              <i class="left arrow icon"></i>
+            </a>
+            {% endif %}
+            {% for i in pageRange %}
+              {% if current_num == i %}
+              <a href="?q={{ query }}&pn={{ i }}" class="active item">
+                {{i}}
+              </a>
+              {% else %}
+              <a href="?q={{ query }}&pn={{ i }}" class="item">
+                {{i}}
+              </a>
+              {% endif %}
+            {% endfor %}
+            {% if current_list.has_next %}
+            <a href="?q={{ query }}&pn={{ current_list.next_page_number }}" class="icon item">
+              <i class="right arrow icon"></i>
+            </a>
+            {% else %}
+            <a class="disabled icon item">
+              <i class="right arrow icon"></i>
+            </a>
+            {% endif %}
+          </div>
+
+            {% endif %}
+        </div>
+        <div class="three wide column">
+          
+        </div>
+      </div>
+      
+    </div>
+  </body>
+</html>

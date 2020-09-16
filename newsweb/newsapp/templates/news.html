@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{article.title}}</title>
+    <link rel="stylesheet" href={% static "css/semantic.css" %} media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+    <div class="">
+      <div class="ui inverted menu">
+        <a href={% url 'index' %} class="item">Home</a>
+        <a href={% url 'search' %} class="item">Search</a>
+      </div>
+      <div class="ui vertical segment">
+        <div class="ui grid">
+          <div class="three wide column">
+
+          </div>
+          <div class="ten wide column">
+            <div class="" align="center">
+              <h1 class="ui header">{{article.title}}</h1>
+            </div>
+            <table class="ui very basic table">
+              <tr>
+                <td align="left" style="text-align:left">
+                  发布时间：{{time}}
+                </td>
+                <td align="right" style="text-align:right">
+                  来源：{{ article.source }}
+                </td>
+              </tr>
+            </table>
+            <div class="ui horizontal divider">
+            </div>
+              {% for para in paralist %}
+            <p>
+              {{para|safe}}
+            </p>
+              {% endfor %}
+          </div>
+          <div class="three wide colomn">
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

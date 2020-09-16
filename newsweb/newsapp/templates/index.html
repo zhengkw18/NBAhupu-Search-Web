@@ -1,0 +1,89 @@
+{% load staticfiles %}
+{% load filter %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NBA</title>
+    <link rel="stylesheet" href={% static "css/semantic.css" %} media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+    <div class="ui inverted menu">
+        <a href={% url 'index' %} class="active item">Home</a>
+        <a href="{% url 'search' %}" class="item">Search</a>
+    </div>
+    <div class="ui vertical segment">
+      <div class="ui grid">
+        <div class="ten wide column">
+          <div class="ui horizontal divider">
+            NBA新闻（共 {{newsnum}} 条）
+          </div>
+          {% for article in current_list %}
+            <div class="ui container segment">
+              <h2 class="ui header">
+                <a href="{% url 'news' article.id%}">{{article.title}}</a>
+              </h2>
+              <p>
+                {{ article.content|truncatehanzi:"150" }}
+              </p>
+            </div>
+          {% endfor %}
+          <div class="ui pagination menu">
+            {% if current_list.has_previous %}
+            <a href="{% url 'index' current_list.previous_page_number %}" class="icon item">
+              <i class="left arrow icon"></i>
+            </a>
+            {% else %}
+            <a class="disabled icon item">
+              <i class="left arrow icon"></i>
+            </a>
+            {% endif %}
+            {% for i in pageRange %}
+              {% if current_num == i %}
+              <a href="{% url 'index' i %}" class="active item">
+                {{i}}
+              </a>
+              {% else %}
+              <a href="{% url 'index' i %}" class="item">
+                {{i}}
+              </a>
+              {% endif %}
+            {% endfor %}
+            {% if current_list.has_next %}
+            <a href="{% url 'index' current_list.next_page_number %}" class="icon item">
+              <i class="right arrow icon"></i>
+            </a>
+            {% else %}
+            <a class="disabled icon item">
+              <i class="right arrow icon"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="two wide column"></div>
+          <div class="four wide column">
+            <table class="ui table">
+                <tr>
+                    <td>
+                        <strong>球队热度榜</strong>
+                    </td>
+                    <td>
+                        <strong>相关文章数目</strong>
+                    </td>
+                </tr>
+                {% for num,name,id in rank %}
+                    <tr>
+                    <td>
+                        <a href="{% url 'team' id '' %}">{{ name }}</a>
+                    </td>
+                    <td>
+                        {{num}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
